@@ -10,15 +10,14 @@ function HomePage() {
 
   const fetchData = async () => {
     console.log('here')
-    const res = await apiService.getRepos()
+    const res = await apiService.getProjects()
   }
   
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          User repositóries
-        </p>
+        <p>User Projects</p>
+
       </header>
     </div>
   );
