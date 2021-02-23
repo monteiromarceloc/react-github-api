@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { Octokit } from "@octokit/rest";
 import firebase from './firebaseCredentials';
+import { authtoken } from './env'
 
 const username = "monteiromarceloc"
-const token = "dad24703c1fa8f750b6e2b3766e91f1bced8a180"
+const token = authtoken /* YOU TOKEN HERE */
 const org = "studiosol"
 const mediaType = { previews: ['inertia'] }
 const ccid = 6132089
@@ -16,7 +17,6 @@ export const apiService = {
   getProjects: async () => {
     try {
       const response = await octokit.request('GET /orgs/{org}/projects', { org, mediaType })
-      console.log('getProjects: ', response)
       return response.data.map(e => ({
         id: e.id,
         name: e.name,
@@ -38,7 +38,6 @@ export const apiService = {
       db.ref('columns').get().then((snap) => {
         if (snap.exists()) {
           const FBColumns = Object.values(snap.val());
-          console.log('FBColumns: ', FBColumns);
         } else {
           console.log('FBColumns empty');
           payload.forEach(e => db.ref(`columns/${e.id}`).set({ name: e.name }));
@@ -49,6 +48,7 @@ export const apiService = {
       console.log('getColumns error: ', error)
     }
   },
+
   getCards: async (column_id) => {
     try {
       const response = await octokit.request('GET /projects/columns/{column_id}/cards', {
@@ -59,7 +59,6 @@ export const apiService = {
       const snap = await db.ref(`columns/${column_id}/cards`).get()
       if (snap.exists()) {
         const cards = snap.val();
-        console.log('FBCards: ', cards);
 
         let responsePayload = response.data.map((e, i) => ({
           ...e,
@@ -69,12 +68,7 @@ export const apiService = {
       }
       else {
         console.log('FBCards empty');
-        const payload = response.data.map(e => ({
-          id: e.id,
-          issue_number: e.content_url?.split('/').slice(-1)[0],
-          repo: e.content_url?.split('/').slice(-3)[0]
-        }));
-        payload.forEach(e => db.ref(`columns/${column_id}/cards/${e.id}`).set(e));
+        response.data.forEach(({ id, content_url }) => db.ref(`columns/${column_id}/cards/${id}`).set({ content_url }));
       }
       return response.data;
     } catch (error) {
@@ -98,7 +92,23 @@ export const apiService = {
 
   updateFB: async (column_id, cards) => {
     try {
-      console.log(column_id, ':', cards);
+      const payload = {};
+      cards.forEach(data => {
+        if (data.content_url) {
+          const { id, content_url } = data;
+          payload[id] = {
+            id,
+            content_url
+          }
+        } else {
+          const { id, url } = data;
+          payload[id] = {
+            id,
+            url
+          }
+        }
+      });
+      db.ref(`columns/${column_id}/cards`).set(payload);
     } catch (error) {
       console.log('updateFB error: ', error)
     }

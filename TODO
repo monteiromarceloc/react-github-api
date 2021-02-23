@@ -1,11 +1,12 @@
 TO DO:
 
-- salve new state to FB
-
 - use webhook
 
-
-FB
-data
-|- coluna_id
-    |- card_id
+- optmize data savings:
+columns
+|- coluna_id:
+    |- name
+    |- cards:
+        |- card_id: content_url
+        ...
+...        

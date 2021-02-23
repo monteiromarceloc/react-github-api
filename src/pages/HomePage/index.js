@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { apiService } from '../../services/api';
-import { Main, ProjectContent, Column, CardContainer, Title, Text } from './styles'
+import { Main, ProjectContent, Column, CardContainer, Title, Text, Button, Flag } from './styles'
 
 function HomePage() {
   const [project, setProject] = useState();
@@ -18,6 +18,7 @@ function HomePage() {
   return (
     <Main>
       <h1>Cifra Club Mobile - Downstream</h1>
+      <Button onClick={() => setTrigger((old) => old + 1)}>Save Columns</Button>
       <ProjectContent>
         {
           columns?.map(e =>
@@ -25,7 +26,6 @@ function HomePage() {
           )
         }
       </ProjectContent>
-      <button onClick={() => setTrigger((old) => old + 1)}>Save Columns</button>
     </Main>
   );
 }
@@ -44,10 +44,15 @@ const ColumnComponent = ({ data, onUpdate }) => {
   }, [data]);
 
   useEffect(() => {
-    if (onUpdate > 1) {
-      console.log('willupdate')
+    if (onUpdate > 0) {
+      updateFB();
     }
+    // eslint-disable-next-line
   }, [onUpdate])
+
+  const updateFB = useCallback(async () => {
+    apiService.updateFB(data.id, cards);
+  }, [cards, data.id])
 
   return <Column>
     <Title>{data.name}</Title>
@@ -68,6 +73,11 @@ const CardComponent = ({ data }) => {
         const repo = splitedArr.slice(-3)[0]
         const res = await apiService.getIssue(repo, issue_number)
         setCardInfo(res);
+      } else {
+        setCardInfo({
+          title: truncate(data.note, 50),
+          html_url: "",
+        })
       }
     }
     fetchData();
@@ -77,7 +87,12 @@ const CardComponent = ({ data }) => {
     window.open(url);
   }
 
-  return <CardContainer onClick={openLink(info?.html_url)} isNew={data.new}>
+  return <CardContainer onClick={openLink(info?.html_url)}>
     <Text>{info?.title}</Text>
+    {data.new && <Flag />}
   </CardContainer>
 }
+
+function truncate(str, n) {
+  return (str.length > n) ? str.substr(0, n - 1) + ' (...)' : str;
+};

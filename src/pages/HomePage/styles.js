@@ -7,6 +7,7 @@ export const Main = styled.div`
     text-align: center;
     background-color: #282c34;
     min-height: 100vh;
+    position: relative;
 `
 
 export const ProjectContent = styled.div`
@@ -31,10 +32,11 @@ export const Column = styled.div`
 export const CardContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: ${({ isNew }) => isNew ? "#30d63d" : "#30363d"};
+    background-color: #30363d;
     border-radius: 4px;
     margin: 6px;
     cursor: pointer;
+    position: relative;
 `
 
 export const Title = styled.h1`
@@ -48,3 +50,28 @@ export const Text = styled.h1`
   text-align: center;
   color: #aaa;
 `;
+
+export const Button = styled.button`
+  background: #1E88E5;
+  color: #ddd;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border-radius: 3px;
+  border: .5px solid #666;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+`
+
+export const Flag = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #30d63d;
+
+`
