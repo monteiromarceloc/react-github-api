@@ -25,7 +25,6 @@ export const apiService = {
 
   getColumns: async (project_id) => {
     try {
-      console.log('token: ', token);
       const response = await octokit.request('GET /projects/{project_id}/columns', {
         project_id: ccid, mediaType
       });
