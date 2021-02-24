@@ -1,10 +1,9 @@
 import axios from 'axios'
 import { Octokit } from "@octokit/rest";
 import firebase from './firebaseCredentials';
-import { authtoken } from './env'
 
 const username = "monteiromarceloc"
-const token = authtoken /* YOU TOKEN HERE */
+const token = process.env.REACT_APP_AUTH_TOKEN || "" /* YOU TOKEN HERE */
 const org = "studiosol"
 const mediaType = { previews: ['inertia'] }
 const ccid = 6132089
