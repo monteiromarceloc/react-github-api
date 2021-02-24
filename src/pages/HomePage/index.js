@@ -3,7 +3,7 @@ import { apiService } from '../../services/api';
 import { Main, ProjectContent, Column, CardContainer, Title, Text, Button, Flag } from './styles'
 
 function HomePage() {
-  const [project, setProject] = useState();
+  // const [project, setProject] = useState();
   const [columns, setColumns] = useState();
   const [trigger, setTrigger] = useState(0);
 

@@ -1,8 +1,6 @@
-import axios from 'axios'
 import { Octokit } from "@octokit/rest";
 import firebase from './firebaseCredentials';
 
-const username = "monteiromarceloc"
 const token = process.env.REACT_APP_AUTH_TOKEN || "" /* YOU TOKEN HERE */
 const org = "studiosol"
 const mediaType = { previews: ['inertia'] }
@@ -36,7 +34,7 @@ export const apiService = {
       }));
       db.ref('columns').get().then((snap) => {
         if (snap.exists()) {
-          const FBColumns = Object.values(snap.val());
+          // const FBColumns = Object.values(snap.val());
         } else {
           console.log('FBColumns empty');
           payload.forEach(e => db.ref(`columns/${e.id}`).set({ name: e.name }));
