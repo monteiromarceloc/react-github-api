@@ -1,21 +1,21 @@
-export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';
+export const SET_IS_AUTH = 'SET_IS_AUTH';
 
-export const setCurrentCategory = (newCategory) => ({
-  type: SET_CURRENT_CATEGORY,
-  payload: newCategory,
+export const setIsAuthenticated = (payload) => ({
+  type: SET_IS_AUTH,
+  payload,
 });
 
 const INITIAL_STATE = {
-  currentCategory: 0,
+  isAuthenticated: false,
 }
 
 export default function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case SET_CURRENT_CATEGORY:
-        return {
-          ...state,
-          currentCategory: action.payload
-        };
+    case SET_IS_AUTH:
+      return {
+        ...state,
+        isAuthenticated: action.payload
+      };
     default:
       return state;
   }

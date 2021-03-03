@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiService } from '../../services/api';
-import { Main, ProjectContent, Column, CardContainer, Title, Text, Button, Flag } from './styles'
+import { Button } from '../../components';
+import { Main, ProjectContent, Column, CardContainer, Title, Text, Flag } from './styles'
 
 function HomePage() {
-  // const [project, setProject] = useState();
   const [columns, setColumns] = useState();
   const [trigger, setTrigger] = useState(0);
 
