@@ -35,6 +35,7 @@ export const CardContainer = styled.div`
     background-color: #30363d;
     border-radius: 4px;
     margin: 6px;
+    padding: 0 6px;
     cursor: pointer;
     position: relative;
 `
@@ -49,6 +50,9 @@ export const Text = styled.h1`
   font-size: 12px;
   text-align: center;
   color: #aaa;
+  overflow: hidden;
+  white-space: pre-wrap;
+  text-overflow: wrap;
 `;
 
 export const Button = styled.button`

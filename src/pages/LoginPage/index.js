@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { authService } from '../../services/api';
-import { Button, Input } from '../../components';
-import { Main } from './styles'
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
+import { authService } from '../../services/api';
+import { Button, Input } from '../../components';
+import { Main } from './styles'
 
 function HomePage() {
   const dispatch = useDispatch();

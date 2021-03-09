@@ -14,11 +14,13 @@ const octokit = new Octokit({ auth: token });
 export const authService = {
   signIn: async (email, password, dispatch, toast, onSucess, onFailure) => {
     try {
-      const data = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const data = await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(() => firebase.auth().signInWithEmailAndPassword(email, password));
       const uid = data?.user?.uid;
 
       if (uid) {
         dispatch(setIsAuthenticated(true));
+        localStorage.setItem('KANBAN::auth', true);
         const snap = await db.ref(`users/${uid}`).get();
 
         if (!snap.exists()) {
