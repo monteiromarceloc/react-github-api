@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 
-export default ({ children, float, ...props }) => <StyledButton {...props}>{children}</StyledButton>
+export default (props) => {
+    const { children, onClick, ...rest } = props
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = async () => {
+        setLoading(true);
+        await onClick();
+        setLoading(false);
+    }
+
+    return (
+        <StyledButton onClick={handleClick} {...rest}>
+            {
+                loading ?
+                    'Carregando...'
+                    : children
+            }
+        </StyledButton>
+    )
+}
 
 const StyledButton = styled.button`
     background: #1E88E5;

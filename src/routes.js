@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import {
   LoginPage,
@@ -8,15 +8,24 @@ import {
 } from './pages'
 
 function App() {
-  const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated)
+  const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated) // TODO: try to use firebase.auth
   return (
     <Switch>
-      <Route exact path='/'><LoginPage /></Route>
-      {
-        isAuthenticated && (
-          <Route exact path='/home'><HomePage /></Route>
-        )
-      }
+      <Route exact path='/'>
+        {
+          isAuthenticated
+            ? <Redirect to={{ pathname: '/home' }} />
+            : <Redirect to={{ pathname: '/login' }} />
+        }
+      </Route>
+      <Route exact path='/home'>
+        {
+          isAuthenticated
+            ? <HomePage />
+            : <Redirect to={{ pathname: '/login' }} />
+        }
+      </Route>
+      <Route exact path='/login'><LoginPage /></Route>
     </Switch>
   )
 }

@@ -1,4 +1,5 @@
 import { Octokit } from "@octokit/rest";
+import { setIsAuthenticated } from "../store/MainReducer";
 import firebase from './firebaseCredentials';
 
 const token = process.env.REACT_APP_AUTH_TOKEN || "" /* YOU TOKEN HERE */
@@ -9,6 +10,37 @@ const db = firebase.database();
 
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 const octokit = new Octokit({ auth: token });
+
+export const authService = {
+  signIn: async (email, password, dispatch, toast, onSucess, onFailure) => {
+    try {
+      const data = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const uid = data?.user?.uid;
+
+      if (uid) {
+        dispatch(setIsAuthenticated(true));
+        const snap = await db.ref(`users/${uid}`).get();
+
+        if (!snap.exists()) {
+          await firebase.auth().sendPasswordResetEmail(email);
+          toast.info('Enviamos um email de redefinição de senha para você');
+
+          db.ref(`users/${uid}`).set({
+            lastLogin: firebase.database.ServerValue.TIMESTAMP
+          })
+        }
+        if (onSucess) onSucess();
+        return;
+      }
+      throw new Error('Uid not found');
+    }
+    catch (err) {
+      console.log('SignIn Error: ', err);
+      toast.warn('Falha ao logar. Confira seus dados.');
+      if (onFailure) onFailure();
+    }
+  },
+}
 
 export const apiService = {
   getProjects: async () => {
@@ -33,9 +65,7 @@ export const apiService = {
         name: e.name,
       }));
       db.ref('columns').get().then((snap) => {
-        if (snap.exists()) {
-          // const FBColumns = Object.values(snap.val());
-        } else {
+        if (!snap.exists()) {
           console.log('FBColumns empty');
           payload.forEach(e => db.ref(`columns/${e.id}`).set({ name: e.name }));
         }

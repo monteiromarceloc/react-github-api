@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './theme/index.css';
-import App from './routes';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import store from './store'
 import { theme } from './theme/globalStyle'
+import './theme/index.css';
+import App from './routes';
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <App />
+        <ToastContainer />
       </ThemeProvider>
     </BrowserRouter>
   </Provider>,

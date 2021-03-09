@@ -18,11 +18,11 @@ function HomePage() {
   return (
     <Main>
       <h1>Cifra Club Mobile - Downstream</h1>
-      <Button onClick={() => setTrigger((old) => old + 1)}>Save Columns</Button>
+      <Button float onClick={() => setTrigger((old) => old + 1)}>Save Columns</Button>
       <ProjectContent>
         {
           columns?.map(e =>
-            <ColumnComponent data={e} onUpdate={trigger} />
+            <ColumnComponent data={e} onUpdate={trigger} key={e.id} />
           )
         }
       </ProjectContent>
@@ -57,7 +57,7 @@ const ColumnComponent = ({ data, onUpdate }) => {
   return <Column>
     <Title>{data.name}</Title>
     {
-      cards?.map(e => <CardComponent data={e} />)
+      cards?.map(e => <CardComponent data={e} key={e.id} />)
     }
   </Column>
 }
