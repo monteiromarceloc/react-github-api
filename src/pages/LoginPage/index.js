@@ -9,8 +9,8 @@ import { Main } from './styles'
 function HomePage() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [email, setEmail] = useState('marcelo.monteiro@cifraclub.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onLogin = async () => {
     const onSucess = () => history.push('/home');
