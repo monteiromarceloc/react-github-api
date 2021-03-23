@@ -19,14 +19,8 @@ function App() {
             : <Redirect to='/login' />
         }
       </Route>
-      <Route exact path='/home'>
-        {
-          isAuthenticated
-            ? <HomePage />
-            : <Redirect to='/login' />
-        }
-      </Route>
-      <Route exact path='/login'><LoginPage /></Route>
+      <Route path='/home'><HomePage /></Route>
+      <Route path='/login'><LoginPage /></Route>
     </Switch>
   )
 }

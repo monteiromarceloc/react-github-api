@@ -2,28 +2,35 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { apiService } from '../../services/api';
 import { Button, LogoutButton } from '../../components';
 import { Main, ProjectContent, Column, CardContainer, Title, Text, Flag } from './styles'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { setIsAuthenticated } from '../../store/MainReducer';
 
 function HomePage() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated)
   const [columns, setColumns] = useState();
   const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await apiService.getColumns()
-      setColumns(res);
+    if (isAuthenticated) {
+      const fetchData = async () => {
+        const res = await apiService.getColumns()
+        setColumns(res);
+      }
+      fetchData()
+    } else {
+      history.push('/login');
     }
-    fetchData()
-  }, [])
+  }, [isAuthenticated, history])
 
   const onLogout = () => {
     dispatch(setIsAuthenticated(false));
     history.push('/login');
   }
+
+  if (!isAuthenticated) return <Main />
 
   return (
     <Main>
