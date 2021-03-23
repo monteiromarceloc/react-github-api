@@ -1,9 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiService } from '../../services/api';
-import { Button } from '../../components';
+import { Button, LogoutButton } from '../../components';
 import { Main, ProjectContent, Column, CardContainer, Title, Text, Flag } from './styles'
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { setIsAuthenticated } from '../../store/MainReducer';
 
 function HomePage() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [columns, setColumns] = useState();
   const [trigger, setTrigger] = useState(0);
 
@@ -15,10 +20,16 @@ function HomePage() {
     fetchData()
   }, [])
 
+  const onLogout = () => {
+    dispatch(setIsAuthenticated(false));
+    history.push('/login');
+  }
+
   return (
     <Main>
       <h1>Cifra Club Mobile - Downstream</h1>
       <Button float onClick={() => setTrigger((old) => old + 1)}>Save Columns</Button>
+      <LogoutButton onClick={onLogout} />
       <ProjectContent>
         {
           columns?.map(e =>

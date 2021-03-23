@@ -1,30 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import firebase from './services/firebaseCredentials';
 
 import {
   LoginPage,
   HomePage,
 } from './pages'
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuthenticated } from './store/MainReducer';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const dispatch = useDispatch();
-  const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated) // TODO: try to use firebase.auth
+  const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated) // TODO: session should expire
 
-  useEffect(() => {
-    const unlisten = firebase.auth().onAuthStateChanged(
-      user => {
-        dispatch(setIsAuthenticated(!!user))
-      },
-    );
-    return () => {
-      unlisten();
-    }
-  })
-
-  // const isAuthenticated = useSelector(state => state.MainReducer.isAuthenticated) // TODO: try to use firebase.auth
   return (
     <Switch>
       <Route exact path='/'>

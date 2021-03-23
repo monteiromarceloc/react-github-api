@@ -20,7 +20,6 @@ export const authService = {
 
       if (uid) {
         dispatch(setIsAuthenticated(true));
-        localStorage.setItem('KANBAN::auth', true);
         const snap = await db.ref(`users/${uid}`).get();
 
         if (!snap.exists()) {
