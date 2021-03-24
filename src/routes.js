@@ -15,12 +15,19 @@ function App() {
       <Switch>
         <Route exact path='/'>
           {
-            isAuthenticated ? <Redirect to='/home' />
+            isAuthenticated
+              ? <Redirect to='/home' />
               : <Redirect to='/login' />
           }
         </Route>
-        <Route path='/home'><HomePage /></Route>
-        <Route path='/login'><LoginPage /></Route>
+        <Route exact path='/home'>
+          {
+            isAuthenticated
+              ? <HomePage />
+              : <Redirect to='/login' />
+          }
+        </Route>
+        <Route exact path='/login'><LoginPage /></Route>
       </Switch>
     </BrowserRouter>
   )
